@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherView: View {
     var weather: ResponseBody
+    @State private var moveUpAndDown = false
     var body: some View {
         ZStack(alignment: .leading) {
             VStack {
@@ -36,16 +37,19 @@ struct WeatherView: View {
                             .font(.system(size: 100))
                             .fontWeight(.bold)
                             .padding()
+                        
                     }
+                    Image("3dIcon-png").resizable().scaledToFit().shadow(radius: 10, y:10).offset(y: moveUpAndDown ? -3 : 3)
+                        .onAppear {
+                            withAnimation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                                moveUpAndDown.toggle()
+                            }
+                        }
                     Spacer()
-//                    Image(systemName: "sparkles").font(.system(size: 100))
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
+                        .padding()
                 }
                 .frame(maxWidth: .infinity)
-            }	
+            }
             
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,12 +62,12 @@ struct WeatherView: View {
                     HStack{
                         WeatherRow(logo: "thermometer.medium", name: "Min temp", value: (weather.main.tempMin.roundDouble() + "°"))
                         Spacer()
-                            WeatherRow(logo: "thermometer.medium", name: "Max temp", value: (weather.main.tempMax.roundDouble() + "°"))
+                        WeatherRow(logo: "thermometer.medium", name: "Max temp", value: (weather.main.tempMax.roundDouble() + "°"))
                     }
                     HStack{
                         WeatherRow(logo: "wind", name: "Wind Speed", value: (weather.wind.speed.roundDouble() + "m/s"))
                         Spacer()
-                            WeatherRow(logo: "humidity", name: "Max temp", value: (weather.main.humidity.roundDouble() + "%"))
+                        WeatherRow(logo: "humidity", name: "Max temp", value: (weather.main.humidity.roundDouble() + "%"))
                     }
                     
                 }
@@ -77,12 +81,12 @@ struct WeatherView: View {
         }
         
         //        .background(Color(hue: 0.693, saturation: 0.884, brightness: 0.776))
-                .background(
+        .background(
             LinearGradient(gradient: Gradient(colors: [.indigo, .blue, .teal]), startPoint: .top, endPoint: .bottom)
         )
         .preferredColorScheme(.dark)
         .edgesIgnoringSafeArea(.bottom)
-//        [Color("Color1"),
+        //        [Color("Color1"),
     }
 }
 
